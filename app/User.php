@@ -14,7 +14,7 @@ class User extends Authenticatable
     const USUARIO_NO_VERIFICADO = '0';
 
     const USUARIO_ADMINISTRADOR = 'true';
-    const USAURIO_REGULAR = 'false';
+    const USUARIO_REGULAR = 'false';
 
     /**
      * The attributes that are mass assignable.
