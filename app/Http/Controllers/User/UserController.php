@@ -15,8 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
+
         $usuarios = User::all();
+
         return response()->json(['data' => $usuarios], 200);
+
     }
 
     /**
@@ -27,7 +30,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed'
+        ];
+
+        $this->validate($request, $rules);
+
+        $campos = $request->all();
+        $campos['password'] = bcrypt($request->password);
+        $campos['verified'] = User::USUARIO_NO_VERIFICADO;
+        $campos['verification_token'] = User::generarVerificationToken();
+        $campos['admin'] = User::USUARIO_REGULAR;
+
+        $usuario = User::create($campos);
+
+        return response()->json(['data' => $usuario], 201);
+
     }
 
     /**
@@ -38,7 +59,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $usuario = User::findOrFail($id);
+
+        return response()->json(['data' => $usuario], 200);
+
     }
 
     /**
