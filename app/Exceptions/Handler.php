@@ -69,7 +69,11 @@ class Handler extends ExceptionHandler
 
         }
 
-        
+        if ( $exception instanceof AuthenticationException ) {
+
+            return $this->errorResponse( 'No posse permisos para ejecutar esta acción.', 403 );
+
+        }
 
         return parent::render($request, $exception);
 
