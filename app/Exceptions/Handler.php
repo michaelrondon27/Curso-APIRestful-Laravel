@@ -3,10 +3,15 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Traits\ApiResponser;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+
+    use ApiResponser;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -48,6 +53,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+        if ( $exception instanceof ModelNotFoundException ) {
+
+            $modelo = strtolower( class_basename( $exception->getModel() ) );
+            return $this->errorResponse("No Existe ninguna instancia de {$modelo} con el id especificado", 404);
+
+        }
+
         return parent::render($request, $exception);
+
     }
 }
