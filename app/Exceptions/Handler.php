@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Traits\ApiResponser;
+use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -96,7 +97,24 @@ class Handler extends ExceptionHandler
 
         }
 
-        return parent::render($request, $exception);
+        if ( $exception instanceof QueryException ) {
+
+            $codigo = $exception->errorInfo[1];
+
+            if ( $codigo == 1451 ) {
+                return $this->errorResponse( 'No se puede eliminar de forma permanente el recurso porque está relacionado con algún otro.', 409 );
+            }
+
+        }
+
+        if ( config('app.debug') ) {
+
+            return parent::render($request, $exception);
+
+        }
+
+        return $this->errorResponse( 'Falla inesperada. Intente Luego', 500 );
+
 
     }
 }
