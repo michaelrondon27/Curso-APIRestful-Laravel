@@ -37,15 +37,15 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed'
         ];
 
-        $this->validate($request, $rules);
+        $this->validate( $request, $rules );
 
         $campos = $request->all();
-        $campos['password'] = bcrypt($request->password);
+        $campos['password'] = bcrypt( $request->password );
         $campos['verified'] = User::USUARIO_NO_VERIFICADO;
         $campos['verification_token'] = User::generarVerificationToken();
         $campos['admin'] = User::USUARIO_REGULAR;
 
-        $usuario = User::create($campos);
+        $usuario = User::create( $campos );
 
         return response()->json(['data' => $usuario], 201);
 
