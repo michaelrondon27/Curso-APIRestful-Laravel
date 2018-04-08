@@ -41,7 +41,7 @@ class CategoryController extends ApiController
         $category = Category::create( $request->all() );
 
         return $this->showOne( $category, 201 );
-        
+
     }
 
     /**
@@ -66,7 +66,22 @@ class CategoryController extends ApiController
      */
     public function update(Request $request, Category $category)
     {
-        //
+        
+        $category->fill($request->only([
+            'name',
+            'description',
+        ]));
+
+        if ( $category->isClean() ) {
+
+            return $this->errorResponse( 'Debe especificar al menos un valor diferente para actualizar.', 422 );
+
+        }
+
+        $category->save();
+
+        return $this->showOne( $category );
+        
     }
 
     /**
