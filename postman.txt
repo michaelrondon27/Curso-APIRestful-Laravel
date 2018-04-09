@@ -1,0 +1,2 @@
+apirestful.com/products/1/transactions - Get - Mostrar las transacciones de un producto
+
