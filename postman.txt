@@ -6,3 +6,6 @@ apirestful.com/products/1/categories - Get - Mostrar las categorias de un produc
 
 apirestful.com/products/1/categories/12 - Put - Actualizar categorias de un producto
 
+apirestful.com/products/1/categories/12 - Delete - Eliminar categoria de un producto
+
+apirestful.com/products/4/buyers/4/transactions - Store - Agregar transaccion de comprador a un producto
