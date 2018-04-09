@@ -164,7 +164,11 @@ class UserController extends ApiController
 
         }
 
-        Mail::to( $user )->send(new UserCreated( $user ));
+        retry( 5, function() use ( $user ) {
+
+            Mail::to( $user )->send(new UserCreated( $user ));
+
+        }, 100 );
 
         return $this->showMessage('El correo de verificación se ha reenviado.');
 
