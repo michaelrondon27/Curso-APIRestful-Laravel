@@ -6,6 +6,7 @@ use Exception;
 use App\Traits\ApiResponser;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -105,6 +106,10 @@ class Handler extends ExceptionHandler
                 return $this->errorResponse( 'No se puede eliminar de forma permanente el recurso porque está relacionado con algún otro.', 409 );
             }
 
+        }
+
+        if ( $exception instanceof TokenMismatchException ) {
+            return redirect()->back()->withInput($request->input());
         }
 
         if ( config('app.debug') ) {
