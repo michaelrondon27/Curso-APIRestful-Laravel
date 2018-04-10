@@ -68,13 +68,17 @@ class Handler extends ExceptionHandler
 
         }
 
-        if ( $exception instanceof AuthorizationException ) {
+        if ( $exception instanceof  AuthenticationException) {
+
+            if ( $this->isFrontend($request) ) {
+                return redirect()->guest('login');
+            }
 
             return $this->errorResponse( 'No autenticado.', 401 );
 
         }
 
-        if ( $exception instanceof AuthenticationException ) {
+        if ( $exception instanceof AuthorizationException ) {
 
             return $this->errorResponse( 'No posse permisos para ejecutar esta acción.', 403 );
 
@@ -121,5 +125,10 @@ class Handler extends ExceptionHandler
         return $this->errorResponse( 'Falla inesperada. Intente Luego', 500 );
 
 
+    }
+
+    private function isFrontend($request)
+    {
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 }
