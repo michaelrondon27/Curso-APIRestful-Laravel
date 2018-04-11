@@ -37,8 +37,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <<li>
-                                <<a href="{{ route('personal-tokens') }}">My Tokens</a>
+                            <li>
+                                <a href="{{ route('personal-tokens') }}">My Tokens</a>
                             </li>
                         @endif
                     </ul>
