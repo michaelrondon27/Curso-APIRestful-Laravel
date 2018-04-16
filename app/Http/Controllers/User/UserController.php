@@ -30,6 +30,7 @@ class UserController extends ApiController
      */
     public function index()
     {
+        $this->allowedAdminAction();
 
         $usuarios = User::all();
 
@@ -118,6 +119,8 @@ class UserController extends ApiController
         }
 
         if ( $request->has('admin') ) {
+
+            $this->allowedAdminAction();
 
             if ( !$user->esVerificado() ) {
 
